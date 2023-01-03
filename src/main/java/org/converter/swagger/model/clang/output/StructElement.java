@@ -1,4 +1,4 @@
-package org.converter.swagger.model;
+package org.converter.swagger.model.clang.output;
 
 import lombok.Builder;
 import lombok.Data;
@@ -6,9 +6,11 @@ import lombok.Data;
 @Data
 @Builder
 public class StructElement {
-StructTypes type;
-String typeName;
+CType type;
 String elementName;
+String example;
+
+
 
 
 

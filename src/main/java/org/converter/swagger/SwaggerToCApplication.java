@@ -3,6 +3,8 @@ package org.converter.swagger;
 import io.swagger.oas.models.media.Schema;
 import io.swagger.parser.OpenAPIParser;
 import io.swagger.parser.models.SwaggerParseResult;
+import org.converter.swagger.parser.SchemaParser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.util.FileCopyUtils;
@@ -19,8 +21,12 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 @SpringBootApplication
 public class SwaggerToCApplication {
 
+	@Autowired
+	SchemaParser sp=new SchemaParser();
 
 	public static void main(String[] args) {
+
+		SpringApplication.run(SwaggerToCApplication.class, args);
 
 		Yaml yaml=new Yaml();
 		SwaggerToCApplication app=new SwaggerToCApplication();
@@ -31,7 +37,9 @@ public class SwaggerToCApplication {
 			String yamlString =FileCopyUtils.copyToString(reader);
 			SwaggerParseResult result = new OpenAPIParser().readContents(yamlString,null,null);
 		Map<String, Schema> schemaMap=result.getOpenAPI().getComponents().getSchemas();
-		String struct="struct ";
+
+		app.sp.parse(schemaMap);
+		/*String struct="struct ";
 
 			Set<Map.Entry<String, Schema>> entries  = schemaMap.entrySet();
 			for( Map.Entry <String, Schema> entry :entries)
@@ -51,16 +59,16 @@ public class SwaggerToCApplication {
 					System.out.println(struct+"\n");
 
 				}
-				struct+="}"+s.getName().toLowerCase()+"_t ;";
+				struct+="}"+ObjName.toLowerCase()+"_t ;\n";
 				System.out.println(struct+"\n");
-			}
+			}*/
 
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
 		}
 	//	System.out.println(obj);
 
-		SpringApplication.run(SwaggerToCApplication.class, args);
+
 
 	}
 
