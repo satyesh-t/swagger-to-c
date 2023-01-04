@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 @Data
 public class CStructure {
+    CType typeDef;
     String structName;
     String fullExample;
     List<StructElement> structElementList;
-    CType typeDef;
-    StringBuffer structString=new StringBuffer("");
+    StringBuffer structString=new StringBuffer();
     public CStructure(String stuctName) {
         this.structName = stuctName;
         structElementList=new ArrayList<>();
