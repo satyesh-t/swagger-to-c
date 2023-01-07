@@ -4,6 +4,7 @@ import io.swagger.oas.models.media.*;
 import jakarta.annotation.PostConstruct;
 import org.converter.swagger.model.clang.output.CType;
 import org.converter.swagger.model.clang.output.CtypeEnum;
+import org.converter.swagger.inf.ITypeParser;
 import org.springframework.stereotype.Component;
 
 import java.util.EnumMap;
@@ -11,7 +12,7 @@ import java.util.HashMap;
 import java.util.Optional;
 
 @Component
-public class TypeParser {
+public class TypeParser implements ITypeParser {
 
     HashMap<String,String> knownType=new HashMap<>();
     HashMap<String ,String> numberTypes=new HashMap<>();
@@ -29,12 +30,13 @@ public class TypeParser {
     }
 
   @PostConstruct
-    public void initTypes() {
+    private void initTypes() {
         numberTypes.put("float","float ");
         numberTypes.put("double","double ");
 
         integerTypes.put("int32","int ");
         integerTypes.put("int64","long ");
+
     }
 
 
@@ -97,10 +99,8 @@ public class TypeParser {
 
         }
 
+   return parseByTypeString(schema);
 
-        return CType.builder().
-                typeName("unkown")
-                .build();
     }
 
     private String extractSchemaString(String schemaName) {
@@ -110,5 +110,38 @@ public class TypeParser {
                 else {return "_";}
     }
 
+    private CType parseByTypeString(Schema<?> schema)
+    {
+        String type=schema.getType();
+        if(type.equals("string"))
+        {
+            return CType.builder().
+                    typeName("str ")
+                    .build();
+
+        } else if (type.equals("number")) {
+            return CType.builder().typeName( Optional.ofNullable(numberTypes
+                                    .get(schema.getFormat()))
+                            .orElse("long "))
+                    .isEnum(false).isArray(false).isStruct(false)
+                    .build();
+        }
+        else if(type.equals("integer")) {
+            return CType.builder().typeName( Optional.ofNullable(integerTypes
+                                    .get(schema.getFormat()))
+                            .orElse("long "))
+                    .build();
+        }
+        else if(type.equals("boolean")) {
+            return CType.builder().
+                    typeName("bool")
+                    .isDateTime(true)
+                    .build();
+        }
+
+        return CType.builder().
+                typeName("unkown")
+                .build();
+    }
 
 }
