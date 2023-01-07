@@ -30,9 +30,7 @@ public class SchemaParser implements ISchemaParser {
     @Override
     public List<CStructure> getStructs(Map<String, Schema> schemaMap) {
         List<CStructure> stuctureList = new ArrayList<>();
-        schemaMap.forEach((k, v) -> {
-            stuctureList.add(parserEach(v, k));
-        });
+        schemaMap.forEach((k, v) -> stuctureList.add(parserEach(v, k)));
         return stuctureList;
     }
 

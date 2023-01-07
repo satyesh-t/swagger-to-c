@@ -78,7 +78,6 @@ public class TypeParser implements ITypeParser {
         else if(schema instanceof BooleanSchema bs) {
             return CType.builder().
                     typeName("bool")
-                    .isDateTime(true)
                     .build();
         }
         else if(schema instanceof ArraySchema as) {
