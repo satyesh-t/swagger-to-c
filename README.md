@@ -10,7 +10,7 @@ Example the petstore yaml that is used as an example on https://editor.swagger.i
 ```
 #ifndef _PET_STORE_H
 
-#define #ifndef _PET_STORE_H
+#define _PET_STORE_H
 
 
 	#ifndef _COMMON_ENUM
