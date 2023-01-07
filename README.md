@@ -1,5 +1,5 @@
-# swagger-to-c
-Swagger/ Open API doc to C structures and validation functions
+# swagger to c
+Converts Swagger/ Open API doc to C structures and validation functions
 
 This project aims to read the swagger yaml/json and create/generate C header file with structure of the pojo
 and generate validation functions .
